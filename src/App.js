@@ -6,8 +6,6 @@ _jobs.forEach((job) => {
 	job.status = 'send';
 });
 
-const statuses = ['send', 'wait', 'interview', 'declined', 'accepted'];
-
 function App() {
 	const [displayKind, setDisplayKind] = useState('full');
 	const [jobs, setJobs] = useState(_jobs);
@@ -33,11 +31,9 @@ function App() {
 			case 'accepted':
 				job.status = 'send';
 				break;
-        default:
-          // do nothing
 		}
 		setJobs([...jobs]);
-	}
+	};
 
 	return (
 		<div className="App">
@@ -47,15 +43,24 @@ function App() {
 				<div className="jobs">
 					{jobs.map((job, index) => {
 						return (
-							<div key={index} className="job">
+							<div key={index} className={`job ${job.status}`}>
 								<div className="header">
 									<div className="position">
 										<a href={job.url}>{job.position}</a>
 									</div>
-									<button onClick={() => handleStatusChange(job)} className="status">{job.status}</button>
+									<button
+										onClick={() => handleStatusChange(job)}
+										className="status"
+									>
+										{job.status}
+									</button>
 								</div>
 								<div className="skills">{job.skills}</div>
-								<div className="bulkText">{job.bulkText}</div>
+								{job.status !== 'declined' && (
+									<div className="bulkText">
+										{job.bulkText}
+									</div>
+								)}
 							</div>
 						);
 					})}
