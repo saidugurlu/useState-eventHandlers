@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import './App.scss';
-import jobs from './data/jobs.json';
+import _jobs from './data/jobs.json';
+
+_jobs.forEach((job) => {
+	job.status = 'send';
+});
 
 function App() {
 	const [displayKind, setDisplayKind] = useState('full');
+	const [jobs, setJobs] = useState(_jobs);
 
 	const handleToggleView = () => {
 		setDisplayKind(displayKind === 'full' ? 'list' : 'full');
@@ -18,8 +23,11 @@ function App() {
 					{jobs.map((job, index) => {
 						return (
 							<div key={index} className="job">
-								<div className="position">
-									<a href={job.url}>{job.position}</a>
+								<div className="header">
+									<div className="position">
+										<a href={job.url}>{job.position}</a>
+									</div>
+									<button className="status">{job.status}</button>
 								</div>
 								<div className="skills">{job.skills}</div>
 								<div className="bulkText">{job.bulkText}</div>
