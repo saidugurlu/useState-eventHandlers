@@ -6,6 +6,8 @@ _jobs.forEach((job) => {
 	job.status = 'send';
 });
 
+const statuses = ['send', 'wait', 'interview', 'declined', 'accepted'];
+
 function App() {
 	const [displayKind, setDisplayKind] = useState('full');
 	const [jobs, setJobs] = useState(_jobs);
@@ -13,6 +15,29 @@ function App() {
 	const handleToggleView = () => {
 		setDisplayKind(displayKind === 'full' ? 'list' : 'full');
 	};
+
+	const handleStatusChange = (job) => {
+		switch (job.status) {
+			case 'send':
+				job.status = 'wait';
+				break;
+			case 'wait':
+				job.status = 'interview';
+				break;
+			case 'interview':
+				job.status = 'declined';
+				break;
+			case 'declined':
+				job.status = 'accepted';
+				break;
+			case 'accepted':
+				job.status = 'send';
+				break;
+        default:
+          // do nothing
+		}
+		setJobs([...jobs]);
+	}
 
 	return (
 		<div className="App">
@@ -27,7 +52,7 @@ function App() {
 									<div className="position">
 										<a href={job.url}>{job.position}</a>
 									</div>
-									<button className="status">{job.status}</button>
+									<button onClick={() => handleStatusChange(job)} className="status">{job.status}</button>
 								</div>
 								<div className="skills">{job.skills}</div>
 								<div className="bulkText">{job.bulkText}</div>
